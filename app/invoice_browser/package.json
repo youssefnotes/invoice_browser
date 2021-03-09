@@ -1,0 +1,34 @@
+{
+    "name": "invoice_browser",
+    "version": "0.0.1",
+    "description": "A Fiori Invoice application.",
+    "keywords": [
+        "ui5",
+        "openui5",
+        "sapui5"
+    ],
+    "main": "webapp/index.html",
+    "scripts": {
+        "deploy": "cf deploy mta_archives/archive.mtar",
+        "build:cf": "ui5 build preload --clean-dest --config ui5-deploy.yaml --include-task=generateManifestBundle generateCachebusterInfo",
+        "build:mta": "rimraf resources mta_archives && mbt build --mtar archive",
+        "undeploy": "cf undeploy com-sap-acc-invoicebrowser --delete-services --delete-service-keys"
+    },
+    "devDependencies": {
+        "@ui5/cli": "2.7.1",
+        "@ui5/fs": "2.0.1",
+        "@ui5/logger": "2.0.0",
+        "@sap/ux-ui5-tooling": "1",
+        "@sap/ux-specification": "latest",
+        "@sap/ui5-builder-webide-extension": "1.0.x",
+        "ui5-task-zipper": "^0.3.1",
+        "mbt": "^1.0.15"
+    },
+    "ui5": {
+        "dependencies": [
+            "@sap/ui5-builder-webide-extension",
+            "ui5-task-zipper",
+            "mbt"
+        ]
+    }
+}
