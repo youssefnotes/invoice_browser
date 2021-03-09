@@ -1,4 +1,5 @@
 # Notes on using CAP
+
 In this mini series of post I will cover my experiement building a CRUD application using CAP and deploying it on SAP BTP CF.
 
 - CDS Model
@@ -11,9 +12,11 @@ In this mini series of post I will cover my experiement building a CRUD applicat
 - Themes and Styles
 
 ## Housekeeping
+
 Setting up our development environment, thanks to my colleague @Gunter for pointing me to use VSCode.
 
 The following packages are required for CAP development.
+
 - Install nodejs, I use NVM `https://github.com/nvm-sh/nvm` allows switching between multiple node versions
 - Install SQLite
 - The command line client and development toolkit for the SAP Cloud Application Programming Model (CAP) `npm i -g @sap/cds-dk`
@@ -35,8 +38,6 @@ cf undeploy <mta-id> deletes an MTA (use cf mtas to find the MTA ID).
 Use the optional --delete-services parameter to also wipe service instances.
 Caution: This deletes the HDI containers with the application data.
 
-
-
 Add the following in the package.json file in the root folder of your project:
 
 ```
@@ -50,19 +51,26 @@ Add the following in the package.json file in the root folder of your project:
 `cds build`
 `cds build --production`
 
-
 ## Project Setup && Layout
+
 - Let's initialize our project using `cds init invoice_sample`
+
 > This will create a default project structure
+
 - Run `npm install`
+
 > Pull all the required libraries, for example sqlite
 
 ## The CDS model
+
 Folder **db** we will contain the domain model.
+
 - Create a `schema.cds` file to contain the definitions
 
 Let's start with a simple model of Invoice Header
+
 - AccountingDocumentHeader
+
 ```
 entity AccountingDocumentHeader {
   CompanyCode   : String(4);
@@ -73,10 +81,12 @@ entity AccountingDocumentHeader {
   Plant         : String;
 }
 ```
+
 - Now let's deploy locally with `cds deploy --to sqlite` and examine our table
 ![sqlite_accdocheader.png](blog/sqlite_accdocheader.png)
 
 - AccountingDocumentDetails
+
 ```
 entity AccountingDocumentDetails {
   CompanyCode   : String(4);
@@ -87,9 +97,12 @@ entity AccountingDocumentDetails {
   Plant         : String;
 }
 ```
+
 ## The Service
+
 - Under the **srv** directory create an invoice-service.cds
 - add the following service definition to expose the entity
+
 ```
 using {com.cap.accountingDoc as accountingDoc} from '../db/schema';
 
@@ -103,9 +116,12 @@ annotate AccountingDocumentService.DocumentHeaderService with @odata.draft.enabl
 - Notice the last two annotations to enable out of the box draft functionality, cool!
 
 ## The UI/Fiori Elements
+
 - In VSCode, open the application generator.
+
 > Command Palette/Fiori: Open Application Generator  
 ![application_generator.png](blog/application_generator.png)
+
 - Select SAP Fiori Elements, List Report Objects
 - Data Source is local cap project
 - Select the service & main entity  
