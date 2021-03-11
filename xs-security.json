@@ -1,0 +1,8 @@
+{
+    "xsappname": "invoice_browser",
+    "tenant-mode": "dedicated",
+    "description": "Security profile of invoice browser application",
+    "scopes": [],
+    "attributes": [],
+    "role-templates": []
+  }

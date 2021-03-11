@@ -23,6 +23,10 @@ annotate AccountingDocumentService.DocumentHeaderService with @(
     UI.HeaderInfo                 : {
         TypeName       : 'Accounting Documente',
         TypeNamePlural : 'Accounting Documents',
+        Title          : {
+            $Type : 'UI.DataField',
+            Value : companyCode
+        }
     },
     UI.LineItem                   : [
         {

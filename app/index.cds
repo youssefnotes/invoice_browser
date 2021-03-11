@@ -1,2 +1,2 @@
 
-using from './invoice_browser/annotations';
+using from './/invoice_browser//annotations';
