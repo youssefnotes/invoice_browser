@@ -15,6 +15,8 @@ entity AccountingDocumentHeader : cuid, managed {
   bp              : String(50);
   docHeaderText   : String;
   plant           : String;
+  sensitivity     : Integer;
+  criticality     : Integer;
   documentDetails : Composition of many AccountingDocumentDetails
                       on documentDetails.up_ = $self;
 }

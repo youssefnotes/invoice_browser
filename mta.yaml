@@ -1,0 +1,315 @@
+## appName = ia
+## language=nodejs; multiTenant=false
+## approuter=
+_schema-version: "3.1"
+ID: invoice_browser
+version: 1.0.0
+description: "Inovice Browser"
+parameters:
+  enable-parallel-deployments: true
+
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm install --production
+        # - cds build/all
+        - npx -p @sap/cds-dk cds build --production
+modules:
+  - name: fiori-destination-content
+    type: com.sap.application.content
+    requires:
+      - name: uaa_engagement
+        parameters:
+          service-key:
+            name: uaa_engagement-key
+
+      - name: fiori_engagement_html_repo_host
+        parameters:
+          service-key:
+            name: fiori_engagement_html_repo_host-key
+
+      - name: fiori-destination-service
+        parameters:
+          content-target: true
+    parameters:
+      content:
+        subaccount:
+          destinations:
+            - Name: my_service_fiori_engagement_html_repo_host
+              ServiceInstanceName: fiori-html5-app-host-service
+              ServiceKeyName: fiori_engagement_html_repo_host-key
+              sap.cloud.service: ia
+            - Authentication: OAuth2UserTokenExchange
+              Name: my_service_uaa_fiori
+              ServiceInstanceName: fiori-xsuaa-service
+              ServiceKeyName: uaa_engagement-key
+              sap.cloud.service: ia
+          existing_destinations_policy: update
+    build-parameters:
+      no-source: true
+
+  - name: fiori_ui_deployer
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: fiori_engagement_html_repo_host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - fiori-content.zip
+          name: innovation_engagement
+          target-path: resources/
+
+  - name: innovation_engagement
+    type: html5
+    path: app/innovation_engagement
+    build-parameters:
+      builder: custom
+      commands:
+        - npm run build
+      supported-platforms: [ ]
+
+  - name: fiori_ui_deployer_category_list
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: fiori_engagement_html_repo_host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - fiori-content_category_list.zip
+          name: category_list
+          target-path: resources/
+
+  - name: category_list
+    type: html5
+    path: app/category-list
+    build-parameters:
+      builder: custom
+      commands:
+        - npm run build
+      supported-platforms: [ ]
+
+  - name: fiori_ui_deployer_dream_team
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: fiori_engagement_html_repo_host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - fiori-content_dream_team.zip
+          name: dream_team
+          target-path: resources/
+
+  - name: dream_team
+    type: html5
+    path: app/dream-team
+    build-parameters:
+      builder: custom
+      commands:
+        - npm run build
+      supported-platforms: [ ]
+
+  - name: fiori_ui_deployer_hcai_stage
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: fiori_engagement_html_repo_host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - fiori-content_hcai_stage.zip
+          name: hcai_stage
+          target-path: resources/
+
+  - name: hcai_stage
+    type: html5
+    path: app/hcai_stage
+    build-parameters:
+      builder: custom
+      commands:
+        - npm run build
+      supported-platforms: [ ]
+
+  - name: fiori_ui_deployer_innovation_advisor
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: fiori_engagement_html_repo_host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - fiori-content_innovation_advisor_list.zip
+          name: innovation_advisor
+          target-path: resources/
+
+  - name: innovation_advisor
+    type: html5
+    path: app/innovation_advisor_list
+    build-parameters:
+      builder: custom
+      commands:
+        - npm run build
+      supported-platforms: [ ]
+
+  - name: fiori_ui_deployer_industry_list
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: fiori_engagement_html_repo_host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - fiori-content_industry_list.zip
+          name: industry_list
+          target-path: resources/
+
+  - name: industry_list
+    type: html5
+    path: app/industry_list
+    build-parameters:
+      builder: custom
+      commands:
+        - npm run build
+      supported-platforms: [ ]
+
+  - name: fiori_ui_deployer_market_unit
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: fiori_engagement_html_repo_host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - fiori-content_market_unit.zip
+          name: market_unit
+          target-path: resources/
+
+  - name: market_unit
+    type: html5
+    path: app/market_unit
+    build-parameters:
+      builder: custom
+      commands:
+        - npm run build
+      supported-platforms: [ ]
+
+  # - name: fiori_ui_deployer_status
+  #   type: com.sap.application.content
+  #   path: .
+  #   requires:
+  #     - name: fiori_engagement_html_repo_host
+  #       parameters:
+  #         content-target: true
+  #   build-parameters:
+  #     build-result: resources
+  #     requires:
+  #       - artifacts:
+  #           - fiori-content_status_list.zip
+  #         name: status_list
+  #         target-path: resources/
+
+  # - name: status_list
+  #   type: html5
+  #   path: app/status_list
+  #   build-parameters:
+  #     builder: custom
+  #     commands:
+  #       - npm run build
+  #     supported-platforms: [ ]
+
+  - name: ia-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      memory: 128M
+      disk-quota: 512M
+    requires:
+      - name: ia-db
+      # added
+      - name: uaa_engagement
+        parameters:
+          service-key:
+          name: uaa_engagement-key
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+
+  - name: ia-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: ia-db
+
+resources:
+  - name: ia-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+    properties:
+      hdi-service-name: ${service-name}
+
+
+  - name: fiori-destination-service
+    type: org.cloudfoundry.managed-service
+    requires:
+      - name: srv-api
+    parameters:
+      service: destination
+      service-name: fiori-destination-service
+      service-plan: lite
+      config:
+        init_data:
+          subaccount:
+            existing_destinations_policy: update
+            destinations:
+              - Name: ia
+                Description: engagement service
+                Authentication: NoAuthentication
+                ProxyType: Internet
+                Type: HTTP
+                URL: ~{srv-api/srv-url}
+                HTML5.DynamicDestination: true
+                ForwardAuthToken: true
+
+  - name: fiori_engagement_html_repo_host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: fiori-html5-app-host-service
+      service-plan: app-host
+
+  - name: uaa_engagement
+    type: org.cloudfoundry.managed-service
+    parameters:
+      path: ./xs-security.json
+      service: xsuaa
+      service-name: fiori-xsuaa-service
+      service-plan: application
