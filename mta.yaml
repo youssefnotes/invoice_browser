@@ -36,12 +36,12 @@ modules:
       content:
         subaccount:
           destinations:
-            - Name: my_service_invoice_browser-html5-repo-host
+            - Name: invoice_browser-html5-repo-host
               ServiceInstanceName: invoice_browser-html5-app-host-service
               ServiceKeyName: invoice_browser-html5-repo-host-key
               sap.cloud.service: invoice_browser
             - Authentication: OAuth2UserTokenExchange
-              Name: my_service_uaa_fiori
+              Name: xsuaa_invoice_browser
               ServiceInstanceName: invoice_browser-xsuaa-service
               ServiceKeyName: invoice_browser_xsuaa-key
               sap.cloud.service: invoice_browser
