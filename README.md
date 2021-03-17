@@ -131,3 +131,96 @@ annotate AccountingDocumentService.DocumentHeaderService with @odata.draft.enabl
 
 ## Deployment
 
+We will package and deploy using MTA.
+
+- Create `mta.yml` file which contains the services and their associations
+
+- The below section is responsible about the UI
+```
+  - name: invoice_browser-app-content
+    type: com.sap.application.content
+    requires:
+      - name: invoice_browser_xsuaa
+        parameters:
+          service-key:
+            name: invoice_browser_xsuaa-key
+
+      - name: invoice_browser-html5-repo-host
+        parameters:
+          service-key:
+            name: invoice_browser-html5-repo-host-key
+
+      - name: invoice_browser-destination-service
+        parameters:
+          content-target: true
+    parameters:
+      content:
+        subaccount:
+          destinations:
+            - Name: invoice_browser-html5-repo-host
+              ServiceInstanceName: invoice_browser-html5-app-host-service
+              ServiceKeyName: invoice_browser-html5-repo-host-key
+              sap.cloud.service: invoice_browser
+            - Authentication: OAuth2UserTokenExchange
+              Name: xsuaa_invoice_browser
+              ServiceInstanceName: invoice_browser-xsuaa-service
+              ServiceKeyName: invoice_browser_xsuaa-key
+              sap.cloud.service: invoice_browser
+          existing_destinations_policy: update
+    build-parameters:
+      no-source: true
+
+  - name: invoice_browser_ui_deployer
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: invoice_browser-html5-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - comsapaccinvoicebrowser.zip
+          name: comsapaccinvoicebrowser
+          target-path: resources/
+
+  - name: comsapaccinvoicebrowser
+    type: html5
+    path: app/invoice_browser
+    build-parameters:
+      builder: custom
+      commands:
+        - npm run build
+      supported-platforms: [ ]
+```
+- Service Section
+```
+  - name: invoice_browser-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      memory: 128M
+      disk-quota: 512M
+    requires:
+      - name: invoice-db
+      # added
+      - name: invoice_browser_xsuaa
+        parameters:
+          service-key:
+          name: invoice_browser_xsuaa-key
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+```
+- DB section
+```
+  - name: invoice_browser-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: invoice-db
+```
