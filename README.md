@@ -128,3 +128,6 @@ annotate AccountingDocumentService.DocumentHeaderService with @odata.draft.enabl
 ![application_generator_project.png](blog/application_generator_project.png)
 - The new generated directory will look like this  
 ![generated_app.png](blog/generated_app.png)
+
+## Deployment
+
