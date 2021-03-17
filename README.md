@@ -224,3 +224,16 @@ We will package and deploy using MTA.
     requires:
       - name: invoice-db
 ```
+
+- Run `mbt build` to generate the deployable artificat inside an *mta_archives* directory
+
+- Navigate to the *mta_archives* directory and run `cf deploy invoice_browser_1.0.0.mtar`
+
+- The deployment process will start and a log will be shown in the console
+
+![cf_deploy_console.png](blog/cf_deploy_console.png)
+
+- if you encountered errors use `cf dmol -i f0742617-86d2-11eb-88c9-eeee0a93ad76` to download the logs and invistigate the reported issue
+
+- finally, to clean uo and delete all the deployed resources use command `cf undeploy invoice_browser --delete-services --delete-service-keys`
+
