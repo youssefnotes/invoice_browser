@@ -49,7 +49,7 @@ modules:
     build-parameters:
       no-source: true
 
-  - name: fiori_ui_deployer
+  - name: invoice_browser_ui_deployer
     type: com.sap.application.content
     path: .
     requires:
@@ -143,5 +143,5 @@ resources:
     parameters:
       path: ./xs-security.json
       service: xsuaa
-      service-name: fiori-xsuaa-service
+      service-name: invoice_browser-xsuaa-service
       service-plan: application
