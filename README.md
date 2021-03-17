@@ -235,5 +235,5 @@ We will package and deploy using MTA.
 
 - if you encountered errors use `cf dmol -i f0742617-86d2-11eb-88c9-eeee0a93ad76` to download the logs and invistigate the reported issue
 
-- finally, to clean uo and delete all the deployed resources use command `cf undeploy invoice_browser --delete-services --delete-service-keys`
+- finally, to clean up and delete all the deployed resources use command `cf undeploy invoice_browser --delete-services --delete-service-keys`
 
